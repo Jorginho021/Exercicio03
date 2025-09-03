@@ -1,0 +1,230 @@
+//Class Main
+
+package exercicio004;
+
+public class Exercicio004 {
+
+    public static void main(String[] args) {
+          // Criando voos
+        Voo v1 = new Voo("AA123", "São Paulo", "Rio de Janeiro", 2);
+        Voo v2 = new Voo("BB456", "Recife", "Fortaleza", 3);
+
+        // Criando passageiros
+        Passageiro p1 = new Passageiro("Lucas", "123.456.789-00");
+        Passageiro p2 = new Passageiro("Maria", "987.654.321-00");
+        Passageiro p3 = new Passageiro("Pedro", "111.222.333-44");
+
+        // Fazendo reservas
+        System.out.println("\n=== Reservando Passagens ===");
+        Reserva r1 = new Reserva(p1, v1);
+        v1.adicionarReserva(r1);
+        p1.adicionarReserva(r1);
+
+        Reserva r2 = new Reserva(p2, v1);
+        v1.adicionarReserva(r2);
+        p2.adicionarReserva(r2);
+
+        Reserva r3 = new Reserva(p3, v1); // Este voo já está cheio
+        v1.adicionarReserva(r3); // Aviso de indisponibilidade
+        p3.adicionarReserva(r3);
+
+        // Fazer reservas no segundo voo
+        Reserva r4 = new Reserva(p3, v2);
+        v2.adicionarReserva(r4);
+        p3.adicionarReserva(r4);
+
+        // Exibir informações dos voos
+        System.out.println("\n=== Voos Disponíveis ===");
+        System.out.println(v1);
+        System.out.println(v2);
+
+        // Listar reservas por passageiro
+        p1.listarReservas();
+        p2.listarReservas();
+        p3.listarReservas();
+    }
+}
+    
+//Classe Voo
+
+package exercicio004;
+
+import java.util.ArrayList;
+
+public class Voo {
+    private String codigo;
+    private String origem;
+    private String destino;
+    private int capacidade;
+    private ArrayList<Reserva> reservas;
+
+    public Voo(String codigo, String origem, String destino, int capacidade) {
+        this.codigo = codigo;
+        this.origem = origem;
+        this.destino = destino;
+        this.capacidade = capacidade;
+        this.reservas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public void setOrigem(String origem) {
+        this.origem = origem;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
+
+    // Verificar disponibilidade
+    public boolean temDisponibilidade() {
+        return reservas.size() < capacidade;
+    }
+
+    // Adicionar reserva ao voo
+    public void adicionarReserva(Reserva reserva) {
+        if (temDisponibilidade()) {
+            reservas.add(reserva);
+            System.out.println("Reserva confirmada no voo " + codigo);
+        } else {
+            System.out.println("⚠ Não há assentos disponíveis no voo " + codigo);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Voo: " + codigo + " | Origem: " + origem + " | Destino: " + destino +
+                " | Assentos ocupados: " + reservas.size() + "/" + capacidade;
+    }
+
+}
+
+//Classe Reserva
+package exercicio004;
+
+
+public class Reserva {
+      private Passageiro passageiro;
+    private Voo voo;
+
+    public Reserva(Passageiro passageiro, Voo voo) {
+        this.passageiro = passageiro;
+        this.voo = voo;
+    }
+
+  
+    // Getters e Setters
+    public Passageiro getPassageiro() {
+        return passageiro;
+    }
+
+    public void setPassageiro(Passageiro passageiro) {
+        this.passageiro = passageiro;
+    }
+
+    public Voo getVoo() {
+        return voo;
+    }
+
+    public void setVoo(Voo voo) {
+        this.voo = voo;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva: " + passageiro.getNome() + " | Voo " + voo.getCodigo() +
+                " (" + voo.getOrigem() + " → " + voo.getDestino() + ")";
+    }
+}
+
+
+//Classe Passageiro
+package exercicio004;
+
+import java.util.ArrayList;
+
+
+public class Passageiro {
+    private String nome;
+    private String cpf;
+    private ArrayList<Reserva> reservas;
+
+    public Passageiro(String nome, String cpf) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.reservas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
+
+    // Método para adicionar reserva ao passageiro
+    public void adicionarReserva(Reserva reserva) {
+        reservas.add(reserva);
+    }
+
+    // Listar reservas do passageiro
+    public void listarReservas() {
+        System.out.println("\nReservas de " + nome + ":");
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva encontrada.");
+        } else {
+            for (Reserva r : reservas) {
+                System.out.println("- " + r);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Passageiro: " + nome + " | CPF: " + cpf + " | Reservas: " + reservas.size();
+    }
+
+}
+
+  
