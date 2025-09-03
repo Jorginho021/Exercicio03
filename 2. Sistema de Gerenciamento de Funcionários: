@@ -1,0 +1,231 @@
+//Main
+package exercicio002;
+
+
+public class Exercicio002 {
+
+   
+    public static void main(String[] args) {
+         // Criando departamentos
+        Departamento d1 = new Departamento("TI");
+        Departamento d2 = new Departamento("Marketing");
+
+        // Criando projetos
+        Projeto p1 = new Projeto("Sistema Web");
+        Projeto p2 = new Projeto("Campanha Digital");
+
+        // Criando funcionários
+        Funcionario f1 = new Funcionario("Carlos", 3500.0, d1);
+        Funcionario f2 = new Funcionario("Ana", 4200.0, d1);
+        Funcionario f3 = new Funcionario("Marcos", 3000.0, d2);
+
+        // Adicionando funcionários aos departamentos
+        d1.adicionarFuncionario(f1);
+        d1.adicionarFuncionario(f2);
+        d2.adicionarFuncionario(f3);
+
+        // Atribuindo funcionários a projetos
+        f1.adicionarProjeto(p1);
+        f2.adicionarProjeto(p1);
+        f3.adicionarProjeto(p2);
+
+        // Exibir funcionários
+        System.out.println("\n=== Funcionários ===");
+        System.out.println(f1);
+        System.out.println(f2);
+        System.out.println(f3);
+
+        // Exibir projetos dos funcionários
+        f1.exibirProjetos();
+        f2.exibirProjetos();
+        f3.exibirProjetos();
+
+        // Calcular média salarial dos departamentos
+        System.out.println("\n=== Média Salarial ===");
+        System.out.println("Departamento " + d1.getNome() + ": R$" + d1.calcularMediaSalarial());
+        System.out.println("Departamento " + d2.getNome() + ": R$" + d2.calcularMediaSalarial());
+    }
+}
+
+//Classe funcionariopackage exercicio002;
+
+import java.util.ArrayList;
+
+public class Funcionario {
+    
+       private String nome;
+    private double salario;
+    private Departamento departamento;
+    private ArrayList<Projeto> projetos;
+
+    public Funcionario(String nome, double salario, Departamento departamento) {
+        this.nome = nome;
+        this.salario = salario;
+        this.departamento = departamento;
+        this.projetos = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public ArrayList<Projeto> getProjetos() {
+        return projetos;
+    }
+
+    // Método para atribuir funcionário a um projeto
+    public void adicionarProjeto(Projeto projeto) {
+        if (!projetos.contains(projeto)) {
+            projetos.add(projeto);
+            projeto.adicionarFuncionario(this);
+            System.out.println("Funcionário " + nome + " atribuído ao projeto " + projeto.getNome());
+        } else {
+            System.out.println("Funcionário " + nome + " já está nesse projeto!");
+        }
+    }
+
+    // Método para exibir os projetos do funcionário
+    public void exibirProjetos() {
+        System.out.println("\nProjetos de " + nome + ":");
+        if (projetos.isEmpty()) {
+            System.out.println("Nenhum projeto atribuído.");
+        } else {
+            for (Projeto p : projetos) {
+                System.out.println("- " + p.getNome());
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Funcionário: " + nome +
+                " | Salário: R$" + salario +
+                " | Departamento: " + departamento.getNome();
+    }
+
+    
+    }
+
+
+//Clase Projeto
+package exercicio002;
+
+import java.util.ArrayList;
+
+
+public class Projeto {
+    private String nome;
+    private final ArrayList<Funcionario> funcionarios;
+
+    public Projeto(String nome) {
+        this.nome = nome;
+
+        this.funcionarios = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    // Método para adicionar funcionário ao projeto
+    public void adicionarFuncionario(Funcionario funcionario) {
+        if (!funcionarios.contains(funcionario)) {
+            funcionarios.add(funcionario);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Projeto: " + nome + " | Funcionários: " + funcionarios.size();
+    }
+}
+    
+    
+    
+
+//Classe Departamento
+package exercicio002;
+
+import java.util.ArrayList;
+
+
+public class Departamento {
+      private String nome;
+    private ArrayList<Funcionario> funcionarios;
+
+    public Departamento(String nome) {
+        this.nome = nome;
+        this.funcionarios = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    // Método para adicionar funcionário ao departamento
+    public void adicionarFuncionario(Funcionario funcionario) {
+        funcionarios.add(funcionario);
+    }
+
+    // Método para calcular média salarial do departamento
+    public double calcularMediaSalarial() {
+        if (funcionarios.isEmpty()) return 0.0;
+
+        double soma = 0;
+        for (Funcionario f : funcionarios) {
+            soma += f.getSalario();
+        }
+        return soma / funcionarios.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Departamento: " + nome + " | Funcionários: " + funcionarios.size();
+    }
+
+   
+    }
+
+
+   
+
