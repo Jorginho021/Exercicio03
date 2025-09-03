@@ -1,0 +1,210 @@
+//Classe Main
+package exercicio.pkg5;
+
+import java.time.LocalDateTime;
+
+public class Exercicio5 {
+
+    public static void main(String[] args) {
+         // Criando médicos
+        Medico m1 = new Medico("Carlos Almeida", "Cardiologia");
+        Medico m2 = new Medico("Fernanda Souza", "Dermatologia");
+
+        // Criando pacientes
+        Paciente p1 = new Paciente("Lucas Pereira", "123.456.789-00");
+        Paciente p2 = new Paciente("Maria Silva", "987.654.321-00");
+        Paciente p3 = new Paciente("João Santos", "111.222.333-44");
+
+        // Agendando consultas
+        System.out.println("\n=== Agendamento de Consultas ===");
+        Consulta c1 = new Consulta(m1, p1, LocalDateTime.of(2025, 9, 10, 14, 30));
+        m1.adicionarConsulta(c1);
+        p1.adicionarConsulta(c1);
+
+        Consulta c2 = new Consulta(m1, p2, LocalDateTime.of(2025, 9, 10, 15, 30));
+        m1.adicionarConsulta(c2);
+        p2.adicionarConsulta(c2);
+
+        Consulta c3 = new Consulta(m2, p3, LocalDateTime.of(2025, 9, 12, 10, 0));
+        m2.adicionarConsulta(c3);
+        p3.adicionarConsulta(c3);
+
+        // Listar pacientes de cada médico
+        m1.listarPacientes();
+        m2.listarPacientes();
+
+        // Exibir próximas consultas
+        System.out.println("\n=== Próximas Consultas ===");
+        System.out.println(c1);
+        System.out.println(c2);
+        System.out.println(c3);
+
+        // Exibir informações gerais
+        System.out.println("\n=== Médicos ===");
+        System.out.println(m1);
+        System.out.println(m2);
+
+        System.out.println("\n=== Pacientes ===");
+        System.out.println(p1);
+        System.out.println(p2);
+        System.out.println(p3);
+    }
+}
+//Classe Consultapackage exercicio.pkg5;
+
+import java.time.LocalDateTime;
+
+
+public class Consulta {
+    private Medico medico;
+    private Paciente paciente;
+    private LocalDateTime dataHora;
+
+    public Consulta(Medico medico, Paciente paciente, LocalDateTime dataHora) {
+        this.medico = medico;
+        this.paciente = paciente;
+        this.dataHora = dataHora;
+    }
+
+    // Getters e Setters
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+       return medico.getNome() + " | Data/Hora: " + "Consulta: " + paciente.getNome() + " com Dr. " + dataHora.format(formato);
+    }
+}
+//Classe Medicopackage exercicio.pkg5;
+
+import java.util.ArrayList;
+
+
+public class Medico {
+        private String nome;
+    private String especialidade;
+    private ArrayList<Consulta> consultas;
+
+    public Medico(String nome, String especialidade) {
+        this.nome = nome;
+        this.especialidade = especialidade;
+        this.consultas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public ArrayList<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    // Adicionar consulta ao médico
+    public void adicionarConsulta(Consulta consulta) {
+        consultas.add(consulta);
+    }
+
+    // Listar pacientes atendidos pelo médico
+    public void listarPacientes() {
+        System.out.println("\nPacientes do Dr. " + nome + ":");
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhum paciente agendado.");
+        } else {
+            for (Consulta c : consultas) {
+                System.out.println("- " + c.getPaciente().getNome());
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Médico: " + nome + " | Especialidade: " + especialidade + " | Consultas: " + consultas.size();
+    }
+}
+   
+
+//Classe paciente 
+package exercicio.pkg5;
+
+import java.util.ArrayList;
+
+
+public class Paciente {
+      private String nome;
+    private String cpf;
+    private ArrayList<Consulta> consultas;
+
+    public Paciente(String nome, String cpf) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.consultas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public ArrayList<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    // Adicionar consulta ao paciente
+    public void adicionarConsulta(Consulta consulta) {
+        consultas.add(consulta);
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente: " + nome + " | CPF: " + cpf + " | Consultas: " + consultas.size();
+       } 
+    }
+
+
