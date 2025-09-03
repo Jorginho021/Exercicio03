@@ -1,4 +1,5 @@
-//Mainpackage exercicio.pkg7;
+//Main
+package exercicio.pkg7;
 
 import java.util.ArrayList;
 
@@ -259,6 +260,3 @@ public class Emprestimo {
                " | Devolver até: " + dataDevolucaoPrevista;
     }
 }
-
-
-
