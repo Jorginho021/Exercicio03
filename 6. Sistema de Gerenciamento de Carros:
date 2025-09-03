@@ -1,0 +1,210 @@
+//Main
+package exercicio.pkg6;
+
+
+public class Exercicio6 {
+
+    
+    public static void main(String[] args) {
+            // Criando marcas
+        Marca m1 = new Marca("Toyota");
+        Marca m2 = new Marca("Honda");
+
+        // Criando carros
+        Carro c1 = new Carro("Corolla", 120000.0, m1);
+        Carro c2 = new Carro("Yaris", 90000.0, m1);
+        Carro c3 = new Carro("Civic", 110000.0, m2);
+        Carro c4 = new Carro("Fit", 80000.0, m2);
+
+        // Criando vendedores
+        Vendedor v1 = new Vendedor("Lucas");
+        Vendedor v2 = new Vendedor("Maria");
+
+        // Vender carros
+        v1.venderCarro(c1);
+        v2.venderCarro(c3);
+        v1.venderCarro(c4);
+
+        // Listar carros vendidos por cada vendedor
+        v1.listarCarrosVendidos();
+        v2.listarCarrosVendidos();
+
+        // Calcular média de preços por marca
+        System.out.println("\n=== Média de preços por marca ===");
+        System.out.println(m1.getNome() + ": R$" + m1.calcularMediaPreco());
+        System.out.println(m2.getNome() + ": R$" + m2.calcularMediaPreco());
+
+        // Exibir estoque completo
+        System.out.println("\n=== Estoque Completo ===");
+        System.out.println(c1);
+        System.out.println(c2);
+        System.out.println(c3);
+        System.out.println(c4);
+    }
+}
+
+   //Classe Vendedor
+package exercicio.pkg6;
+
+import java.util.ArrayList;
+
+
+public class Vendedor {
+        private String nome;
+    private ArrayList<Carro> carrosVendidos;
+
+    public Vendedor(String nome) {
+        this.nome = nome;
+        this.carrosVendidos = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Carro> getCarrosVendidos() {
+        return carrosVendidos;
+    }
+
+    // Vender carro
+    public void venderCarro(Carro carro) {
+        if (carro.getVendedor() == null) {
+            carro.setVendedor(this);
+            carrosVendidos.add(carro);
+            System.out.println("Carro " + carro.getModelo() + " vendido por " + nome);
+        } else {
+            System.out.println("⚠ Carro " + carro.getModelo() + " já foi vendido.");
+        }
+    }
+
+    // Exibir carros vendidos pelo vendedor
+    public void listarCarrosVendidos() {
+        System.out.println("\nCarros vendidos por " + nome + ":");
+        if (carrosVendidos.isEmpty()) {
+            System.out.println("Nenhum carro vendido ainda.");
+        } else {
+            for (Carro c : carrosVendidos) {
+                System.out.println("- " + c.getModelo() + " | Marca: " + c.getMarca().getNome() + " | Preço: R$" + c.getPreco());
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Vendedor: " + nome + " | Carros vendidos: " + carrosVendidos.size();
+    }
+
+   }
+//Classe Marca
+package exercicio.pkg6;
+
+import java.util.ArrayList;
+
+
+public class Marca {
+    
+ private String nome;
+    private ArrayList<Carro> carros;
+
+    public Marca(String nome) {
+        this.nome = nome;
+        this.carros = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Carro> getCarros() {
+        return carros;
+    }
+
+    // Adicionar carro à marca
+    public void adicionarCarro(Carro carro) {
+        carros.add(carro);
+    }
+
+    // Calcular média de preços dos carros da marca
+    public double calcularMediaPreco() {
+        if (carros.isEmpty()) return 0.0;
+        double soma = 0;
+        for (Carro c : carros) {
+            soma += c.getPreco();
+        }
+        return soma / carros.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Marca: " + nome + " | Carros cadastrados: " + carros.size();
+    }
+
+}
+//Classe Carro
+package exercicio.pkg6;
+
+
+public class Carro {
+       private String modelo;
+    private double preco;
+    private Marca marca;
+    private Vendedor vendedor; // vendedor que vendeu o carro (pode ser null se não vendido)
+
+    public Carro(String modelo, double preco, Marca marca) {
+        this.modelo = modelo;
+        this.preco = preco;
+        this.marca = marca;
+        this.vendedor = null;
+        marca.adicionarCarro(this);
+    }
+
+    // Getters e Setters
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    @Override
+    public String toString() {
+        String vendidoPor = (vendedor != null) ? vendedor.getNome() : "Disponível";
+        return "Carro: " + modelo + " | Preço: R$" + preco + " | Marca: " + marca.getNome() + " | Vendido por: " + vendidoPor;
+    }
+
+}
