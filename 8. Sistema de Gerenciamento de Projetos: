@@ -1,0 +1,199 @@
+
+//Main
+package exercicio8;
+
+
+public class Exercicio8 {
+
+   
+    public static void main(String[] args) {
+         // Criando desenvolvedores
+        Desenvolvedor d1 = new Desenvolvedor("Lucas");
+        Desenvolvedor d2 = new Desenvolvedor("Maria");
+
+        // Criando projeto
+        Projeto projeto1 = new Projeto("Sistema de E-commerce");
+
+        // Criando tarefas
+        Tarefa t1 = new Tarefa("Cadastro de usuários", "Implementar CRUD de usuários", 8);
+        Tarefa t2 = new Tarefa("Página de produtos", "Criar layout e listagem de produtos", 12);
+        Tarefa t3 = new Tarefa("Carrinho de compras", "Implementar funcionalidade de carrinho", 10);
+
+        // Adicionar tarefas ao projeto
+        projeto1.adicionarTarefa(t1);
+        projeto1.adicionarTarefa(t2);
+        projeto1.adicionarTarefa(t3);
+
+        // Atribuir tarefas a desenvolvedores
+        t1.setResponsavel(d1);
+        t2.setResponsavel(d2);
+        t3.setResponsavel(d1);
+
+        // Listar tarefas de cada desenvolvedor
+        d1.listarTarefas();
+        d2.listarTarefas();
+
+        // Exibir carga total do projeto
+        System.out.println("\n" + projeto1);
+    }
+}
+
+//Classe Projeto
+package exercicio8;
+
+import java.util.ArrayList;
+
+
+public class Projeto {
+        private String nome;
+    private ArrayList<Tarefa> tarefas;
+
+    public Projeto(String nome) {
+        this.nome = nome;
+        this.tarefas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Tarefa> getTarefas() {
+        return tarefas;
+    }
+
+    // Adicionar tarefa ao projeto
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+        System.out.println("Tarefa '" + tarefa.getTitulo() + "' adicionada ao projeto " + nome);
+    }
+
+    // Calcular carga total do projeto
+    public int calcularCargaTotal() {
+        int soma = 0;
+        for (Tarefa t : tarefas) {
+            soma += t.getHorasEstimadas();
+        }
+        return soma;
+    }
+
+    @Override
+    public String toString() {
+        return "Projeto: " + nome + " | Tarefas: " + tarefas.size() + " | Carga total: " + calcularCargaTotal() + "h";
+    }
+}
+
+//Classe Desenvolvedor
+package exercicio8;
+
+import java.util.ArrayList;
+
+
+public class Desenvolvedor {
+      private String nome;
+    private ArrayList<Tarefa> tarefas;
+
+    public Desenvolvedor(String nome) {
+        this.nome = nome;
+        this.tarefas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Tarefa> getTarefas() {
+        return tarefas;
+    }
+
+    // Adicionar tarefa ao desenvolvedor
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+        System.out.println("Tarefa '" + tarefa.getTitulo() + "' atribuída a " + nome);
+    }
+
+    // Listar tarefas do desenvolvedor
+    public void listarTarefas() {
+        System.out.println("\nTarefas de " + nome + ":");
+        if (tarefas.isEmpty()) {
+            System.out.println("Nenhuma tarefa atribuída.");
+        } else {
+            for (Tarefa t : tarefas) {
+                System.out.println("- " + t);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Desenvolvedor: " + nome + " | Tarefas atribuídas: " + tarefas.size();
+    }
+}
+
+//Classe tarefa1
+
+package exercicio8;
+
+public class Tarefa1 {
+      private String titulo;
+    private String descricao;
+    private int horasEstimadas;
+    private Desenvolvedor responsavel;
+
+    public Tarefa1(String titulo, String descricao, int horasEstimadas) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.horasEstimadas = horasEstimadas;
+        this.responsavel = null;
+    }
+
+    // Getters e Setters
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public int getHorasEstimadas() {
+        return horasEstimadas;
+    }
+
+    public void setHorasEstimadas(int horasEstimadas) {
+        this.horasEstimadas = horasEstimadas;
+    }
+
+    public Desenvolvedor getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(Desenvolvedor responsavel) {
+        this.responsavel = responsavel;
+       
+    }
+
+    @Override
+    public String toString() {
+        String resp = (responsavel != null) ? responsavel.getNome() : "Não atribuído";
+        return titulo + " | " + descricao + " | Horas estimadas: " + horasEstimadas + " | Responsável: " + resp;
+    }
+}
+
