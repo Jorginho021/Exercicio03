@@ -1,0 +1,239 @@
+//Main
+
+package exercicio10;
+
+
+public class Exercicio10 {
+
+    
+    public static void main(String[] args) {
+        // Criando professores
+        Professor prof1 = new Professor("Dr. Carlos");
+        Professor prof2 = new Professor("Dra. Fernanda");
+
+        // Criando disciplinas
+        Disciplina d1 = new Disciplina("Matemática");
+        Disciplina d2 = new Disciplina("Programação");
+
+        // Atribuindo disciplinas aos professores
+        prof1.adicionarDisciplina(d1);
+        prof2.adicionarDisciplina(d2);
+
+        // Criando estudantes
+        Estudante e1 = new Estudante("Lucas", 101);
+        Estudante e2 = new Estudante("Maria", 102);
+
+        // Matriculando estudantes em disciplinas
+        e1.matricular(d1);
+        e1.matricular(d2);
+        e2.matricular(d1);
+
+        // Atribuindo notas
+        d1.atribuirNota(e1, 8.5);
+        d1.atribuirNota(e2, 7.0);
+        d2.atribuirNota(e1, 9.0);
+
+        // Listar disciplinas de cada professor
+        prof1.listarDisciplinas();
+        prof2.listarDisciplinas();
+
+        // Calcular média dos estudantes
+        System.out.println("\nMédia de " + e1.getNome() + ": " + e1.calcularMedia());
+        System.out.println("Média de " + e2.getNome() + ": " + e2.calcularMedia());
+    }
+}
+    
+//Classe Estudante
+
+package exercicio10;
+
+import java.util.ArrayList;
+
+public class Estudante {
+    
+      private String nome;
+    private int matricula;
+    private ArrayList<Disciplina> disciplinas;
+
+    public Estudante(String nome, int matricula) {
+        this.nome = nome;
+        this.matricula = matricula;
+        this.disciplinas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+
+    public ArrayList<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    // Matricular estudante em disciplina
+    public void matricular(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+        disciplina.adicionarEstudante(this);
+        System.out.println(nome + " matriculado na disciplina " + disciplina.getNome());
+    }
+
+    // Calcular média das disciplinas
+    public double calcularMedia() {
+        if (disciplinas.isEmpty()) return 0.0;
+        double soma = 0;
+        for (Disciplina d : disciplinas) {
+            soma += d.getNota(this);
+        }
+        return soma / disciplinas.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Estudante: " + nome + " | Matrícula: " + matricula + " | Disciplinas: " + disciplinas.size();
+    }
+
+}
+
+//Classe Professor
+package exercicio10;
+
+import java.util.ArrayList;
+
+
+public class Professor {
+    
+       private String nome;
+    private ArrayList<Disciplina> disciplinas;
+
+    public Professor(String nome) {
+        this.nome = nome;
+        this.disciplinas = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ArrayList<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    // Adicionar disciplina ao professor
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+        disciplina.setProfessor(this);
+    }
+
+    // Listar disciplinas do professor
+    public void listarDisciplinas() {
+        System.out.println("\nDisciplinas do Professor " + nome + ":");
+        if (disciplinas.isEmpty()) {
+            System.out.println("Nenhuma disciplina cadastrada.");
+        } else {
+            for (Disciplina d : disciplinas) {
+                System.out.println("- " + d.getNome());
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Professor: " + nome + " | Disciplinas: " + disciplinas.size();
+    }
+
+   
+
+}
+
+//Classe Disciplina 
+package exercicio10;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+public class Disciplina {
+
+      private String nome;
+    private Professor professor;
+    private final ArrayList<Estudante> estudantes;
+    private final HashMap<Estudante, Double> notas;
+
+    public Disciplina(String nome) {
+        this.nome = nome;
+        this.estudantes = new ArrayList<>();
+        this.notas = new HashMap<>();
+        this.professor = null;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public ArrayList<Estudante> getEstudantes() {
+        return estudantes;
+    }
+
+    // Adicionar estudante à disciplina
+    public void adicionarEstudante(Estudante estudante) {
+        estudantes.add(estudante);
+        notas.put(estudante, 0.0); // inicializa nota como 0
+    }
+
+    // Atribuir nota a um estudante
+    public void atribuirNota(Estudante estudante, double nota) {
+        if (notas.containsKey(estudante)) {
+            notas.put(estudante, nota);
+            System.out.println("Nota " + nota + " atribuída a " + estudante.getNome() + " na disciplina " + nome);
+        }
+    }
+
+    // Obter nota de um estudante
+    public double getNota(Estudante estudante) {
+        return notas.getOrDefault(estudante, 0.0);
+    }
+
+    @Override
+    public String toString() {
+        return "Disciplina: " + nome + " | Professor: " + (professor != null ? professor.getNome() : "Não definido") +
+               " | Estudantes: " + estudantes.size();
+    }
+
+   
+ }
+    
+
+    
+    
+
+
