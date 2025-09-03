@@ -1,0 +1,193 @@
+//Main
+package exercicio9;
+
+import java.time.LocalDateTime;
+
+
+public class Exercicio9 {
+
+   
+    public static void main(String[] args) {
+          
+        // Criando pratos
+        Prato p1 = new Prato("Pizza Margherita", 35.0);
+        Prato p2 = new Prato("Lasagna", 40.0);
+        Prato p3 = new Prato("Salada Caesar", 25.0);
+
+        // Criando mesas
+        Mesa m1 = new Mesa(1);
+        Mesa m2 = new Mesa(2);
+
+        // Reservando mesas
+        m1.reservar(LocalDateTime.of(2025, 9, 5, 19, 0));
+        m2.reservar(LocalDateTime.of(2025, 9, 6, 20, 30));
+
+        // Criando pedidos
+        Pedido pedido1 = m1.criarPedido();
+        pedido1.adicionarPrato(p1);
+        pedido1.adicionarPrato(p3);
+
+        Pedido pedido2 = m2.criarPedido();
+        pedido2.adicionarPrato(p2);
+        pedido2.adicionarPrato(p2);
+        pedido2.adicionarPrato(p3);
+
+        // Calcular total dos pedidos
+        System.out.println("\n=== Total dos Pedidos ===");
+        System.out.println(pedido1);
+        System.out.println(pedido2);
+
+        // Exibir reservas futuras
+        System.out.println("\n=== Reservas Futuras ===");
+        m1.exibirReserva();
+        m2.exibirReserva();
+
+        // Exibir mesas e pedidos
+        System.out.println("\n=== Mesas e Pedidos ===");
+        System.out.println(m1);
+        System.out.println(m2);
+    }
+}
+  //Classe Prato
+
+package exercicio9;
+
+
+public class Prato {
+        private String nome;
+    private double preco;
+
+    public Prato(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " | R$" + preco;
+    }
+}
+
+//Classe Pedido
+package exercicio9;
+
+import java.util.ArrayList;
+
+
+public class Pedido {
+       private Mesa mesa;
+    private ArrayList<Prato> pratos;
+
+    public Pedido(Mesa mesa) {
+        this.mesa = mesa;
+        this.pratos = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public ArrayList<Prato> getPratos() {
+        return pratos;
+    }
+
+    // Adicionar prato ao pedido
+    public void adicionarPrato(Prato prato) {
+        pratos.add(prato);
+        System.out.println("Prato '" + prato.getNome() + "' adicionado ao pedido da mesa " + mesa.getNumero());
+    }
+
+    // Calcular total do pedido
+    public double calcularTotal() {
+        double total = 0;
+        for (Prato p : pratos) {
+            total += p.getPreco();
+        }
+        return total;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido da Mesa " + mesa.getNumero() + " | Total: R$" + calcularTotal();
+    }
+}
+
+//Classe Mesa
+  package exercicio9;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+
+public class Mesa {
+
+  private int numero;
+    private ArrayList<Pedido> pedidos;
+    private LocalDateTime reserva;
+
+    public Mesa(int numero) {
+        this.numero = numero;
+        this.pedidos = new ArrayList<>();
+        this.reserva = null;
+    }
+
+    // Getters e Setters
+    public int getNumero() {
+        return numero;
+    }
+
+    public ArrayList<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public LocalDateTime getReserva() {
+        return reserva;
+    }
+
+    public void reservar(LocalDateTime dataHora) {
+        this.reserva = dataHora;
+        System.out.println("Mesa " + numero + " reservada para " + dataHora);
+    }
+
+    // Criar pedido para a mesa
+    public Pedido criarPedido() {
+        Pedido pedido = new Pedido(this);
+        pedidos.add(pedido);
+        return pedido;
+    }
+
+    // Exibir reservas futuras
+    public void exibirReserva() {
+        if (reserva != null && reserva.isAfter(LocalDateTime.now())) {
+            System.out.println("Mesa " + numero + " | Reserva futura: " + reserva);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Mesa " + numero + " | Pedidos: " + pedidos.size();
+    }
+}
+    
+    
+
+
+  
