@@ -1,0 +1,194 @@
+//Classe MAIN
+package exercicio001;
+
+import java.util.ArrayList;
+
+
+public class Exercicio001 {
+
+ 
+    public static void main(String[] args) {
+
+      // Criando fornecedores
+        Fornecedor f1 = new Fornecedor("Tech Supplies", "12.345.678/0001-90");
+        Fornecedor f2 = new Fornecedor("Mega Eletrônicos", "98.765.432/0001-12");
+
+        // Criando produtos
+        Produto p1 = new Produto("Mouse Gamer", 120.0, 3, f1);
+        Produto p2 = new Produto("Teclado Mecânico", 250.0, 10, f2);
+        Produto p3 = new Produto("Headset", 200.0, 2, f1);
+
+        // Lista de produtos
+        ArrayList<Produto> estoque = new ArrayList<>();
+        estoque.add(p1);
+        estoque.add(p2);
+        estoque.add(p3);
+
+        // Exibindo todos os produtos
+        System.out.println("=== Produtos no Estoque ===");
+        for (Produto p : estoque) {
+            System.out.println(p);
+            if (p.estoqueBaixo()) {
+                System.out.println("⚠ ATENÇÃO: Estoque baixo do produto '" + p.getNome() + "'!");
+            }
+        }
+
+        // Fazendo um pedido de reposição
+        System.out.println("\n=== Fazendo Pedido ===");
+        Pedido pedido1 = new Pedido(p1, 10, f1);
+        pedido1.fazerPedido();
+
+        // Exibindo estoque atualizado
+        System.out.println("\n=== Estoque Atualizado ===");
+        for (Produto p : estoque) {
+            System.out.println(p);
+        }
+    }
+}
+
+//Classe Produto
+
+package exercicio001;
+
+
+public class Produto {
+    
+     private String nome;
+    private double preco;
+    private int quantidade;
+    private Fornecedor fornecedor;
+
+    public Produto(String nome, double preco, int quantidade, Fornecedor fornecedor) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidade = quantidade;
+        this.fornecedor = fornecedor;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    // Método para verificar se o estoque está baixo
+    public boolean estoqueBaixo() {
+        return this.quantidade < 5;
+    }
+
+    // Método para adicionar mais produtos ao estoque
+    public void adicionarEstoque(int qtd) {
+        if (qtd > 0) {
+            this.quantidade += qtd;
+            System.out.println(qtd + " unidades adicionadas ao estoque de " + nome);
+        } else {
+            System.out.println("Quantidade inválida para adicionar!");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Produto: " + nome +
+                " | Preço: R$" + preco +
+                " | Estoque: " + quantidade +
+                " | Fornecedor: " + fornecedor.getNome();
+    }
+
+    }
+
+
+
+//Classe Fornecedor
+
+package exercicio001;
+
+public class Fornecedor {
+    
+        private String nome;
+    private String cnpj;
+
+    public Fornecedor(String nome, String cnpj) {
+        this.nome = nome;
+        this.cnpj = cnpj;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    @Override
+    public String toString() {
+        return "Fornecedor: " + nome + " | CNPJ: " + cnpj;
+    }
+}
+
+//Classe Pedido
+package exercicio001;
+
+
+public class Pedido {
+    
+       private Produto produto;
+    private int quantidade;
+    private Fornecedor fornecedor;
+
+    public Pedido(Produto produto, int quantidade, Fornecedor fornecedor) {
+        this.produto = produto;
+        this.quantidade = quantidade;
+        this.fornecedor = fornecedor;
+    }
+
+    public void fazerPedido() {
+        System.out.println("Pedido realizado: " + quantidade + " unidades do produto " +
+                produto.getNome() + " para o fornecedor " + fornecedor.getNome());
+        produto.adicionarEstoque(quantidade);
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido de " + quantidade + " unidades do produto " +
+                produto.getNome() + " | Fornecedor: " + fornecedor.getNome();
+    }
+}
+
+
