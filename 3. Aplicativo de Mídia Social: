@@ -1,0 +1,212 @@
+//Main
+package exercicio003;
+
+
+public class Exercicio003 {
+
+   
+    public static void main(String[] args) {
+      
+       // Criando usuários
+        Usuario u1 = new Usuario("Lucas", "lucas@gmail.com");
+        Usuario u2 = new Usuario("Maria", "maria@gmail.com");
+
+        // Usuário 1 faz publicações
+        u1.criarPublicacao("Meu primeiro post na rede social!");
+        u1.criarPublicacao("Aprendendo Java é demais!");
+
+        // Usuário 2 faz publicação
+        u2.criarPublicacao("Hoje está um ótimo dia para programar!");
+
+        // Listar publicações de cada usuário
+        u1.listarPublicacoes();
+        u2.listarPublicacoes();
+
+        // Pegando uma publicação para comentar
+        Publicacao pub1 = u1.getPublicacoes().get(0);
+        Publicacao pub2 = u2.getPublicacoes().get(0);
+
+        // Adicionando comentários
+        pub1.adicionarComentario(new Comentario(u2, "Muito bom, Lucas!"));
+        pub1.adicionarComentario(new Comentario(u1, "Valeu!"));
+
+        pub2.adicionarComentario(new Comentario(u1, "Concordo, Maria!"));
+
+        // Exibindo comentários de cada publicação
+        pub1.listarComentarios();
+        pub2.listarComentarios();
+
+        // Exibir informações dos usuários
+        System.out.println("\n=== Usuários ===");
+        System.out.println(u1);
+        System.out.println(u2);
+    }
+}
+
+//Classe Usuario 
+package exercicio003;
+
+import java.util.ArrayList;
+
+
+public class Usuario {
+
+     private String nome;
+    private String email;
+    private ArrayList<Publicacao> publicacoes;
+
+    public Usuario(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+        this.publicacoes = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ArrayList<Publicacao> getPublicacoes() {
+        return publicacoes;
+    }
+
+    // Criar nova publicação
+    public void criarPublicacao(String conteudo) {
+        Publicacao nova = new Publicacao(this, conteudo);
+        publicacoes.add(nova);
+        System.out.println(nome + " fez uma nova publicação!");
+    }
+
+    // Listar todas as publicações do usuário
+    public void listarPublicacoes() {
+        System.out.println("\nPublicações de " + nome + ":");
+        if (publicacoes.isEmpty()) {
+            System.out.println("Nenhuma publicação encontrada.");
+        } else {
+            for (Publicacao p : publicacoes) {
+                System.out.println("- " + p);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Usuário: " + nome + " | Email: " + email + " | Publicações: " + publicacoes.size();
+    }
+}
+    
+  
+//Classe Publicacao
+package exercicio003;
+
+import java.util.ArrayList;
+
+
+public class Publicacao {
+    
+      private Usuario autor;
+    private String conteudo;
+    private ArrayList<Comentario> comentarios;
+
+    public Publicacao(Usuario autor, String conteudo) {
+        this.autor = autor;
+        this.conteudo = conteudo;
+        this.comentarios = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
+    }
+
+    public String getConteudo() {
+        return conteudo;
+    }
+
+    public void setConteudo(String conteudo) {
+        this.conteudo = conteudo;
+    }
+
+    public ArrayList<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    // Método para adicionar comentário à publicação
+    public void adicionarComentario(Comentario comentario) {
+        comentarios.add(comentario);
+        System.out.println("Comentário adicionado por " + comentario.getAutor().getNome() + " na publicação de " + autor.getNome());
+    }
+
+    // Exibir todos os comentários
+    public void listarComentarios() {
+        System.out.println("\nComentários da publicação: " + conteudo);
+        if (comentarios.isEmpty()) {
+            System.out.println("Nenhum comentário ainda.");
+        } else {
+            comentarios.forEach((c) -> {
+                System.out.println("- " + c);
+            });
+        }
+    }
+
+    @Override
+    public String toString() {
+        return autor.getNome() + " publicou: \"" + conteudo + "\" | Comentários: " + comentarios.size();
+    }
+}
+
+//Classe Comentario
+package exercicio003;
+
+public class Comentario {
+    
+    
+      private Usuario autor;
+    private String texto;
+
+    public Comentario(Usuario autor, String texto) {
+        this.autor = autor;
+        this.texto = texto;
+    }
+
+   
+  
+    // Getters e Setters
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    @Override
+    public String toString() {
+        return autor.getNome() + ": " + texto;
+    }
+}
+
