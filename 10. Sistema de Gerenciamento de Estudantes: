@@ -1,1 +1,190 @@
+package exercicio010;
+
+
+public class Exercicio010 {
+
+    
+    public static void main(String[] args) {
+          // Criar professores
+        Professor prof1 = new Professor("Dr. Bruno Souto");
+        Professor prof2 = new Professor("Dra. Ana Lima");
+
+        // Criar disciplinas
+        Disciplina mat = new Disciplina("Matemática", prof1);
+        Disciplina port = new Disciplina("Português", prof2);
+
+        // Associar disciplinas aos professores
+        prof1.adicionarDisciplina(mat);
+        prof2.adicionarDisciplina(port);
+
+        // Criar estudantes
+        Estudante aluno1 = new Estudante("Jorge");
+        Estudante aluno2 = new Estudante("Maria");
+
+        // Matricular estudantes nas disciplinas
+        mat.matricularEstudante(aluno1);
+        mat.matricularEstudante(aluno2);
+        port.matricularEstudante(aluno1);
+
+        // Adicionar notas aos estudantes
+        aluno1.adicionarNota(8.5);
+        aluno1.adicionarNota(7.0);
+        aluno2.adicionarNota(9.0);
+
+        // Calcular médias
+        System.out.println(aluno1.getNome() + " - Média: " + aluno1.calcularMedia());
+        System.out.println(aluno2.getNome() + " - Média: " + aluno2.calcularMedia());
+
+        // Listar disciplinas de cada professor
+        prof1.listarDisciplinas();
+        prof2.listarDisciplinas();
+    }
+    
+}
+//CLASSE DISCIPLINA
+package exercicio010;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Disciplina {
+      private String nome;
+    private Professor professor;
+    private List<Estudante> estudantes;
+
+    public Disciplina() {
+        estudantes = new ArrayList<>();
+    }
+
+    public Disciplina(String nome, Professor professor) {
+        this.nome = nome;
+        this.professor = professor;
+        this.estudantes = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public List<Estudante> getEstudantes() {
+        return estudantes;
+    }
+
+    public void matricularEstudante(Estudante estudante) {
+        estudantes.add(estudante);
+        estudante.adicionarDisciplina(this);
+    }
+
+ }
+
+//CLASSE ESTUDANTE
+package exercicio010;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Estudante {
+    private String nome;
+    private List<Disciplina> disciplinas;
+    private List<Double> notas;
+
+    public Estudante() {
+        disciplinas = new ArrayList<>();
+        notas = new ArrayList<>();
+    }
+
+    public Estudante(String nome) {
+        this.nome = nome;
+        disciplinas = new ArrayList<>();
+        notas = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+    }
+
+    public void adicionarNota(double nota) {
+        notas.add(nota);
+    }
+
+    public double calcularMedia() {
+        if (notas.isEmpty()) return 0;
+        double soma = 0;
+        for (Double n : notas) {
+            soma += n;
+        }
+        return soma / notas.size();
+    }
+}
+
+//CLASSE PROFESSOR
+package exercicio010;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Professor {
+     private String nome;
+    private List<Disciplina> disciplinas;
+
+    public Professor() {
+        disciplinas = new ArrayList<>();
+    }
+
+    public Professor(String nome) {
+        this.nome = nome;
+        disciplinas = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
+    }
+
+    public void listarDisciplinas() {
+        System.out.println("Disciplinas do professor " + nome + ":");
+        for (Disciplina d : disciplinas) {
+            System.out.println("- " + d.getNome());
+        }
+    }
+}
+
 
