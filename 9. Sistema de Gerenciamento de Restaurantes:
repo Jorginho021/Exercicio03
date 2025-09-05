@@ -1,1 +1,218 @@
+package exercicio009;
 
+import java.time.LocalDateTime;
+
+
+public class Exercicio009 {
+
+    
+    public static void main(String[] args) {
+       Restaurante restaurante = new Restaurante();
+
+        // Criar mesas
+        Mesa mesa1 = new Mesa(1, 4);
+        Mesa mesa2 = new Mesa(2, 2);
+
+        // Definir reservas
+        mesa1.setReserva(LocalDateTime.of(2025, 9, 10, 19, 30));
+        mesa2.setReserva(LocalDateTime.of(2025, 9, 11, 20, 0));
+
+        restaurante.adicionarMesa(mesa1);
+        restaurante.adicionarMesa(mesa2);
+
+        // Criar pratos
+        Prato prato1 = new Prato("Pizza", 35.0);
+        Prato prato2 = new Prato("Hambúrguer", 25.0);
+        Prato prato3 = new Prato("Refrigerante", 8.0);
+
+        // Criar pedido para a mesa 1
+        Pedido pedido1 = new Pedido(mesa1);
+        pedido1.adicionarPrato(prato1);
+        pedido1.adicionarPrato(prato3);
+
+        restaurante.adicionarPedido(pedido1);
+
+        // Criar pedido para a mesa 2
+        Pedido pedido2 = new Pedido(mesa2);
+        pedido2.adicionarPrato(prato2);
+        pedido2.adicionarPrato(prato3);
+
+        restaurante.adicionarPedido(pedido2);
+
+        // Exibir pedidos
+        pedido1.exibirPedido();
+        pedido2.exibirPedido();
+
+        // Exibir reservas futuras
+        restaurante.exibirReservasFuturas();
+    }
+    
+}
+
+
+//CLASSE PRATOpackage exercicio009;
+
+
+public class Prato {
+       private String nome;
+    private double preco;
+
+    public Prato() {}
+
+    public Prato(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+}
+//CLASSE MESA
+package exercicio009;
+
+import java.time.LocalDateTime;
+
+
+public class Mesa {
+  
+
+      private int numero;
+    private int capacidade;
+    private boolean ocupada;
+    private LocalDateTime reserva;
+
+    public Mesa() {}
+
+    public Mesa(int numero, int capacidade) {
+        this.numero = numero;
+        this.capacidade = capacidade;
+        this.ocupada = false;
+        this.reserva = null;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public boolean isOcupada() {
+        return ocupada;
+    }
+
+    public void ocupar() {
+        ocupada = true;
+    }
+
+    public void desocupar() {
+        ocupada = false;
+    }
+
+    public LocalDateTime getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(LocalDateTime reserva) {
+        this.reserva = reserva;
+    }
+}
+
+//CLASSE PEDIDOpackage exercicio009;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Pedido {
+      private Mesa mesa;
+    private List<Prato> pratos;
+
+    public Pedido(Mesa mesa) {
+        this.mesa = mesa;
+        this.pratos = new ArrayList<>();
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public List<Prato> getPratos() {
+        return pratos;
+    }
+
+    public void adicionarPrato(Prato prato) {
+        pratos.add(prato);
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (Prato p : pratos) {
+            total += p.getPreco();
+        }
+        return total;
+    }
+
+    public void exibirPedido() {
+        System.out.println("Pedido da mesa " + mesa.getNumero() + ":");
+        for (Prato p : pratos) {
+            System.out.println("- " + p.getNome() + " R$" + p.getPreco());
+        }
+        System.out.println("Total: R$" + calcularTotal());
+    }
+}
+
+//CLASE RESTAURANTE
+package exercicio009;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Restaurante {
+       private List<Mesa> mesas;
+    private List<Pedido> pedidos;
+
+    public Restaurante() {
+        mesas = new ArrayList<>();
+        pedidos = new ArrayList<>();
+    }
+
+    public void adicionarMesa(Mesa mesa) {
+        mesas.add(mesa);
+    }
+
+    public void adicionarPedido(Pedido pedido) {
+        pedidos.add(pedido);
+    }
+
+    public void exibirReservasFuturas() {
+        System.out.println("Reservas futuras:");
+        for (Mesa m : mesas) {
+            if (m.getReserva() != null) {
+                System.out.println("Mesa " + m.getNumero() + " - Reserva para: " + m.getReserva());
+            }
+        }
+    }
+}
