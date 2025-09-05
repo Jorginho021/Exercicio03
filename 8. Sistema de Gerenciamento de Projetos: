@@ -1,1 +1,177 @@
+package exercicio008;
+
+
+public class Exercicio008 {
+
+    
+    public static void main(String[] args) {
+          // Criar desenvolvedores
+        Desenvolvedor dev1 = new Desenvolvedor("Alice");
+        Desenvolvedor dev2 = new Desenvolvedor("Bob");
+
+        // Criar projeto
+        Projeto projeto = new Projeto("Sistema de E-commerce");
+
+        // Criar tarefas
+        Tarefa tarefa1 = new Tarefa("Implementar tela de login", 5);
+        Tarefa tarefa2 = new Tarefa("Criar API de produtos", 10);
+        Tarefa tarefa3 = new Tarefa("Testes unitários", 6);
+
+        // Atribuir tarefas aos desenvolvedores
+        tarefa1.atribuirDesenvolvedor(dev1);
+        tarefa2.atribuirDesenvolvedor(dev2);
+        tarefa3.atribuirDesenvolvedor(dev1);
+
+        // Adicionar tarefas ao projeto
+        projeto.adicionarTarefa(tarefa1);
+        projeto.adicionarTarefa(tarefa2);
+        projeto.adicionarTarefa(tarefa3);
+
+        // Listar tarefas de cada desenvolvedor
+        dev1.listarTarefas();
+        dev2.listarTarefas();
+
+        // Calcular carga de trabalho do projeto
+        System.out.println("Carga total de trabalho do projeto \"" + projeto.getNome() + "\": " 
+                            + projeto.calcularCargaTrabalho() + " horas");
+    }
+    
+}
+
+
+//CLASSE DESENVOLVEDOR
+package exercicio008;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Desenvolvedor {
+      private String nome;
+    private List<Tarefa> tarefas;
+
+    public Desenvolvedor() {
+        this.tarefas = new ArrayList<>();
+    }
+
+    public Desenvolvedor(String nome) {
+        this.nome = nome;
+        this.tarefas = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Tarefa> getTarefas() {
+        return tarefas;
+    }
+
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+    }
+
+    public void listarTarefas() {
+        System.out.println("Tarefas de " + nome + ":");
+        if (tarefas.isEmpty()) {
+            System.out.println("Nenhuma tarefa atribuída.");
+        } else {
+            for (Tarefa t : tarefas) {
+                System.out.println("- " + t.getDescricao() + " (Horas: " + t.getHoras() + ")");
+            }
+        }
+    }
+}
+  //CLASSE AUTORpackage exercicio008;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Projeto {
+      private String nome;
+    private List<Tarefa> tarefas;
+
+    public Projeto() {
+        this.tarefas = new ArrayList<>();
+    }
+
+    public Projeto(String nome) {
+        this.nome = nome;
+        this.tarefas = new ArrayList<>();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Tarefa> getTarefas() {
+        return tarefas;
+    }
+
+    public void adicionarTarefa(Tarefa tarefa) {
+        tarefas.add(tarefa);
+    }
+
+    // Método para calcular a carga de trabalho total do projeto
+    public int calcularCargaTrabalho() {
+        int totalHoras = 0;
+        for (Tarefa t : tarefas) {
+            totalHoras += t.getHoras();
+        }
+        return totalHoras;
+    }
+}
+//CLASSE TAREFA
+package exercicio008;
+
+
+public class Tarefa {
+    private String descricao;
+    private int horas; // estimativa de horas para a tarefa
+    private Desenvolvedor desenvolvedor;
+
+    public Tarefa() {}
+
+    public Tarefa(String descricao, int horas) {
+        this.descricao = descricao;
+        this.horas = horas;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public int getHoras() {
+        return horas;
+    }
+
+    public void setHoras(int horas) {
+        this.horas = horas;
+    }
+
+    public Desenvolvedor getDesenvolvedor() {
+        return desenvolvedor;
+    }
+
+    public void atribuirDesenvolvedor(Desenvolvedor dev) {
+        this.desenvolvedor = dev;
+        dev.adicionarTarefa(this);
+    }
+   }
+    
+
+
 
